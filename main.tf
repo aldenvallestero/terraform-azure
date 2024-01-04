@@ -73,3 +73,15 @@ resource "azurerm_network_security_rule" "dev-playground-net-sr" {
   resource_group_name = azurerm_resource_group.dev-playground-rg.name
   network_security_group_name = azurerm_network_security_group.dev-playground-net-sg.name
 }
+
+data "azurerm_subscription" "playground" {}
+
+resource "azurerm_role_definition" "dev-playground-role-devops" {
+  name = "dev-playground-role-devops"
+  scope = data.azurerm_subscription.playground.id
+  description = "DevOps Engineer for DEV Environment"
+
+  permissions {
+    actions = [ "Microsoft.AlertsManagement/alerts/read" ]
+  }
+}
